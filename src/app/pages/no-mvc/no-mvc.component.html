@@ -72,26 +72,23 @@
       <h1 class="header">{{'LoginComponent.createAccount' | translate}}</h1>
       <p>{{'LoginComponent.socialNetworksInfo' | translate}}</p>
       
-      <div class="row">
+      <div class="row mt10">
   
         <!-- FACEBOOK BOTÓN -->
         <div class="col-12 col-sm-4 mb20">
-          <button type="button" mat-raised-button color="" (click)="tryFacebookLogin()">
-              <mat-icon class="icon-facebook">info_outline</mat-icon>{{'LoginComponent.loginFacebook' | translate}}
+          <button type="button" mat-raised-button color="" (click)="tryFacebookLogin()">{{'LoginComponent.loginFacebook' | translate}}
           </button>
         </div>
   
         <!-- GOOGLE BOTÓN -->
         <div class="col-12 col-sm-4 mb20">
-          <button type="button" class="" mat-raised-button color="" (click)="tryGoogleLogin()">
-              <mat-icon class="icon-facebook" matSuffix>info_outline</mat-icon>{{'LoginComponent.loginGoogle' | translate}}
+          <button type="button" class="" mat-raised-button color="" (click)="tryGoogleLogin()">{{'LoginComponent.loginGoogle' | translate}}
           </button>
         </div>
         
         <!-- TWITTER BOTÓN -->
         <div class="col-12 col-sm-4 mb20">
-          <button type="button" class="" mat-raised-button color="" (click)="tryTwitterLogin()">
-              <mat-icon class="icon-facebook" matSuffix>info_outline</mat-icon>{{'LoginComponent.loginTwitter' | translate}}
+          <button type="button" class="" mat-raised-button color="" (click)="tryTwitterLogin()">{{'LoginComponent.loginTwitter' | translate}}
           </button>
         </div>
       </div>

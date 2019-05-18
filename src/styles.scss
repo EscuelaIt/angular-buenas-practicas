@@ -1,1 +1,221 @@
-/* You can add global styles to this file, and also import other style files */
+// reset meyer
+html, body, div, span, applet, object, iframe,
+h1, h2, h3, h4, h5, h6, p, blockquote, pre,
+a, abbr, acronym, address, big, cite, code,
+del, dfn, em, img, ins, kbd, q, s, samp,
+small, strike, strong, sub, sup, tt, var,
+b, u, i, center,
+dl, dt, dd, ol, ul, li,
+fieldset, form, label, legend,
+table, caption, tbody, tfoot, thead, tr, th, td,
+article, aside, canvas, details, embed, 
+figure, figcaption, footer, header, hgroup, 
+menu, nav, output, ruby, section, summary,
+time, mark, audio, video {
+	margin: 0;
+	padding: 0;
+	border: 0;
+	font-size: 100%;
+	font: inherit;
+	vertical-align: baseline;
+}
+/* HTML5 display-role reset for older browsers */
+article, aside, details, figcaption, figure, 
+footer, header, hgroup, menu, nav, section {
+	display: block;
+}
+body {
+	line-height: 1;
+}
+ol, ul {
+	list-style: none;
+}
+blockquote, q {
+	quotes: none;
+}
+blockquote:before, blockquote:after,
+q:before, q:after {
+	content: '';
+	content: none;
+}
+table {
+	border-collapse: collapse;
+	border-spacing: 0;
+}
+// fin reset de meyer
+
+// You can add global styles to this file, and also import other style files
+@import '~bootstrap/dist/css/bootstrap.css';
+// deeppurple-amber.css indigo-pink.css pink-bluegrey.css purple-green.css
+@import '~@angular/material/prebuilt-themes/indigo-pink.css';
+
+// a) cargo la fuente de los ICONOS desde GOOGLE MATERIAL ICONOS directamente
+// <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+@font-face {
+  font-family: 'Material Icons';
+  font-style: normal;
+  font-weight: 400;
+  src: url(https://fonts.gstatic.com/s/materialicons/v46/flUhRq6tzZclQEJ-Vdg-IuiaDsNc.woff2) format('woff2');
+}
+
+// b) cargo los estilos de los ICONOS
+// <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+.material-icons {
+  -webkit-font-feature-settings: 'liga';
+  -webkit-font-smoothing: antialiased;
+  direction: ltr;
+  display: inline-block;
+  font-family: 'Material Icons';
+  font-size: 24px;
+  font-style: normal;
+  font-weight: normal;
+  letter-spacing: normal;
+  line-height: 1;
+  text-transform: none;
+  white-space: nowrap;
+  word-wrap: normal;
+}
+
+@import './styles-variables.scss';
+// @import './styles-media.queries.scss';
+
+// MODIFICACIONES COMPONENTES ANGULAR MATERIAL
+// .ng-star-inserted => todas las líneas
+.CreateDancingEventInfoComponent, .CreateDancingEventInfoExtendComponent, .AutocompleteComponent, .CreateDancingEventLocationComponent, .LoginComponent, .MyAcountComponent {
+  .mat-datepicker-toggle-default-icon {
+    color: $primary;
+  }
+
+  mat-icon {
+    color: $primary;
+    position: relative;
+    right: 8px;
+  }
+}
+
+.HomeComponent, .MyAcountComponent {
+  .mat-form-field-appearance-outline {
+    .mat-form-field-wrapper {
+      margin: 0;
+    }
+  }
+}
+
+.mat-toolbar-row {
+  height: 64px !important;
+}
+
+.MyAcountComponent {
+  .mat-tab-body-content {
+    overflow: hidden !important;
+  }
+}
+
+.cdk-global-overlay-wrapper {
+  z-index: 1001;
+}
+
+// ESTILOS GENERALES DE LA APP
+app-root {
+  min-width: 360px;
+}
+
+.cursor-pointer {
+  cursor: pointer;
+}
+
+.flag {
+  background: url(/assets/imgs/flags.png) no-repeat;
+  display: inline-block;
+  height: 11px;
+  margin-right: .3em;
+  width: 16px;
+}
+
+.flag-es {
+  background-position: -16px -44px;
+}
+
+.flag-pt {
+  background-position: -112px -121px;
+}
+
+.h1-header {
+  font-size: 30px;
+  margin-top: 10px;
+  text-align: center;
+}
+
+.img-responsive {
+  width: 100%;
+  height: auto;
+}
+
+.mb0 {
+  margin-bottom: 0px;
+}
+
+.mb10 {
+  margin-bottom: 10px;
+}
+
+.mb15 {
+  margin-bottom: 15px;
+}
+
+.mb20 {
+  margin-bottom: 20px;
+}
+
+.ml10 {
+  margin-left: 10px;
+}
+
+.ml20 {
+  margin-left: 20px;
+}
+
+.mr80 {
+  margin-right: 80px;
+}
+
+.mt10 {
+  margin-top: 10px;
+}
+
+.mt20 {
+  margin-top: 20px;
+}
+
+.mt50 {
+  margin-top: 50px;
+}
+
+.over-hidden {
+  overflow: hidden;
+}
+
+.pl20 {
+  padding-left: 20px;
+}
+
+.pt10 {
+  padding-top: 10px;
+}
+
+.text-center {
+  text-align: center;
+}
+
+.text-right {
+  text-align: right
+}
+
+.upper-letter {
+  text-transform: uppercase;
+}
+
+.w100 {
+  width: 100%;
+}
+
