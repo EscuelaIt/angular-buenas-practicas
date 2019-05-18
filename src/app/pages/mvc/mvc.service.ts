@@ -20,7 +20,7 @@ import { LoginEmailDataSendInterface } from '../../interfaces/login-email-data-s
 @Injectable()
 export class MvcService {
 
-  // modelos de datos
+  // ### MODELOS DE DATOS ###
   formLogin: FormGroup;
 
   constructor(
@@ -30,32 +30,16 @@ export class MvcService {
     private firestoreToolsService: FirestoreToolsService
   ) { }
 
-  // lógica de negocio
+  // ### LÓGICA DE NEGOCIO ###
 
-  tryEmailLogin(): Observable<firebase.auth.UserCredential> {
+  // llamadas AJAX a servicios externos
+  onTryEmailLogin(): Observable<firebase.auth.UserCredential> {
     const values: LoginEmailDataSendInterface = this.formLogin.value;
     return this.authService.doLogin(values);
   }
 
   tryGoogleLogin(): Promise<firebase.auth.UserCredential> {
     return this.authService.googleLogin();
-  }
-
-  createForm() {
-    this.formLogin = this.formBuilder.group({
-      email: ['', [
-                    Validators.required,
-                    this.formToolsService.patternValidator(/^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/, true, { email: true }),
-                  ]],
-      password: ['', [
-                      Validators.required,
-                      Validators.minLength(8),
-                      this.formToolsService.patternValidator(/\d/, true, { hasNumber: true }),
-                      this.formToolsService.patternValidator(/[A-Z]/, true, { hasCapitalCase: true }),
-                      this.formToolsService.patternValidator(/[a-z]/, true, { hasSmallCase: true }),
-                      this.formToolsService.patternValidator(/[ !@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]/, true, { hasSpecialCharacters: true })
-                    ]]
-    });
   }
 
   createUserDataFromCredential(credential: firebase.auth.UserCredential): Promise<any> {
@@ -74,5 +58,27 @@ export class MvcService {
       url,
       credential.additionalUserInfo.profile
     );
+  }
+
+  deleteCurrentUser() {
+    this.authService.deleteCurrentUser();
+  }
+
+  // creación de modelos de datos
+  createForm() {
+    this.formLogin = this.formBuilder.group({
+      email: ['', [
+                    Validators.required,
+                    this.formToolsService.patternValidator(/^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/, true, { email: true }),
+                  ]],
+      password: ['', [
+                      Validators.required,
+                      Validators.minLength(8),
+                      this.formToolsService.patternValidator(/\d/, true, { hasNumber: true }),
+                      this.formToolsService.patternValidator(/[A-Z]/, true, { hasCapitalCase: true }),
+                      this.formToolsService.patternValidator(/[a-z]/, true, { hasSmallCase: true }),
+                      this.formToolsService.patternValidator(/[ !@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]/, true, { hasSpecialCharacters: true })
+                    ]]
+    });
   }
 }
