@@ -1,0 +1,52 @@
+@import '../../../styles-variables.scss';
+
+// a todos los hijos les doy el 100% del ancho
+.form-group > * {
+  width: 100%;
+}
+
+.button-login {
+  width: 100%;
+}
+
+.icon-pass {
+  font-size: 15px !important;
+  height: 18px !important;
+  position: relative !important;
+  right: 0px !important;
+  top: 3px !important;
+  width: 18px !important;
+}
+
+.icon-new-account {
+  left: -3px;
+  position: relative;
+  top: 5px;
+}
+
+.icon-create {
+  color: $primary;
+  left: -6px;
+  position: relative;
+}
+
+.mb20 {
+  margin-bottom: 20px;
+}
+
+
+.header {
+  font-size: 30px;
+  margin-bottom: 20px;
+  text-align: center;
+}
+
+.icon-facebook {
+  left: -6px;
+  position: relative;
+  top: -10px;
+}
+
+.rrss button {
+  width: 100%;
+}

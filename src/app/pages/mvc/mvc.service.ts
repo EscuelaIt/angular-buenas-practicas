@@ -8,17 +8,17 @@ import { Observable } from 'rxjs';
 // mis servicios
 import { FormToolsService } from 'src/app/services/form-tools/form-tools.service';
 import { FirestoreToolsService } from 'src/app/services/firestore-tools/firestore-tools.service';
-import { AuthService } from './services/auth/auth.service';
+import { AuthService } from '../../services/auth/auth.service';
 
 // mis modelos
 import { UserProviderModel } from 'src/app/models/user-provider/user-provider.model';
 
 // constantes
 import { environment } from 'src/environments/environment';
-import { LoginEmailDataSendInterface } from './interfaces/login-email-data-send';
+import { LoginEmailDataSendInterface } from '../../interfaces/login-email-data-send';
 
 @Injectable()
-export class LoginService {
+export class MvcService {
 
   // modelos de datos
   formLogin: FormGroup;

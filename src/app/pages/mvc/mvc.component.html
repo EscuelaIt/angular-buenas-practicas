@@ -1,3 +1,101 @@
-<p>
-  mvc works!
-</p>
+<!-- FORMULARIO DE LOGIN -->
+<div class="container-fluid">
+  <mat-card class="mb20 mt20 LoginComponent">
+    <h1 class="header">{{'AppComponent.login' | translate}}</h1>
+    <form [formGroup]="mvcService.formLogin">
+      <div class="row">
+        <div class="form-group col-12 col-sm-6 mb10">
+            <mat-form-field appearance="outline" [floatLabel]="'always'">
+              <mat-label>{{'LoginComponent.emailAddres' | translate}}</mat-label>
+              <!-- <mat-icon matPrefix>favorite</mat-icon> -->
+              <mat-icon class="cursor-pointer" matSuffix (click)="onClickIconEmail()">email_outline</mat-icon>
+              <input type="text" placeholder="{{'Errors.mandatoryInput' | translate}}"
+                matInput
+                #inputEmail
+                required
+                autocomplete="off"
+                formControlName="email">
+              <!-- <mat-hint align="end">{{inputEmail.value?.length || 0}}/75</mat-hint> -->
+              <mat-error *ngIf="mvcService.formLogin.get('email').hasError('email')">{{'Errors.invalidEmail' | translate}}</mat-error>
+              <mat-error *ngIf="mvcService.formLogin.get('email').hasError('required')">{{'Errors.mandatoryInput' | translate}}</mat-error>
+            </mat-form-field>
+        </div>
+  
+        <div class="form-group col-12 col-sm-6 mb10">
+            <mat-form-field appearance="outline" [floatLabel]="'always'">
+              <mat-label>{{'LoginComponent.password' | translate}}</mat-label>
+              <!-- <mat-icon matPrefix>favorite</mat-icon> -->
+              <mat-icon class="cursor-pointer" (click)="onClickIconPassword()" matSuffix>info_outline</mat-icon>
+              <mat-icon class="cursor-pointer" matPrefix (click)="hide = !hide">{{hide ? 'visibility' : 'visibility_off'}}</mat-icon>
+              <input [type]="hide ? 'text' : 'password'" placeholder="{{'Errors.mandatoryInput' | translate}}"
+                matInput
+                #inputPasword
+                required
+                autocomplete="off"
+                formControlName="password">
+              <mat-hint align="end" class="cursor-pointer" (click)="onClickIconPassword()">{{'LoginComponent.informationPassword' | translate}} <mat-icon class="icon-pass" matSuffix>info_outline</mat-icon></mat-hint>
+              <mat-error *ngIf="mvcService.formLogin.get('password').hasError('hasNumber')">{{'Errors.hasNumber' | translate}}</mat-error>
+              <mat-error *ngIf="mvcService.formLogin.get('password').hasError('hasCapitalCase')">{{'Errors.hasCapitalCase' | translate}}</mat-error>
+              <mat-error *ngIf="mvcService.formLogin.get('password').hasError('hasSmallCase')">{{'Errors.hasSmallCase' | translate}}</mat-error>
+              <mat-error *ngIf="mvcService.formLogin.get('password').hasError('hasSpecialCharacters')">{{'Errors.hasSpecialCharacters' | translate}}</mat-error>
+              <mat-error *ngIf="mvcService.formLogin.get('password').hasError('minlength')">{{'Errors.minlength8' | translate}}</mat-error>
+              <mat-error *ngIf="mvcService.formLogin.get('password').hasError('required')">{{'Errors.mandatoryInput' | translate}}</mat-error>
+            </mat-form-field>
+        </div>
+      </div>
+      
+      <div class="row">
+        <div class="col-12">
+          <button type="submit" class="mb20 button-login" mat-raised-button color="primary" [disabled]="mvcService.formLogin.invalid" (click)="tryEmailLogin()">{{'LoginComponent.login' | translate}}</button>
+        </div>
+      </div>
+    </form>
+      
+    <!-- RECUPERAR CONTRASEÑA -->
+    <div class="row">
+      <div class="col-12 col-sm-5 col-md-4">
+        <button class="button-login" type="button" mat-raised-button color="" (click)="onClickRecoverPassword()">
+          <mat-icon class="icon-create" matPrefix>settings_backup_restore_outline</mat-icon>{{'LoginComponent.recover' | translate}}
+        </button>
+      </div>
+    </div>
+  
+  </mat-card>
+  
+  <!-- IR A LA PÁGINA DE CREAR CUENTA -->
+  <mat-card class="mb20 rrss">
+      <h1 class="header">{{'LoginComponent.createAccount' | translate}}</h1>
+      <p>{{'LoginComponent.socialNetworksInfo' | translate}}</p>
+      
+      <div class="row mt10">
+  
+        <!-- FACEBOOK BOTÓN -->
+        <div class="col-12 col-sm-4 mb20">
+          <button type="button" mat-raised-button color="" (click)="tryFacebookLogin()">{{'LoginComponent.loginFacebook' | translate}}
+          </button>
+        </div>
+  
+        <!-- GOOGLE BOTÓN -->
+        <div class="col-12 col-sm-4 mb20">
+          <button type="button" class="" mat-raised-button color="" (click)="tryGoogleLogin()">{{'LoginComponent.loginGoogle' | translate}}
+          </button>
+        </div>
+        
+        <!-- TWITTER BOTÓN -->
+        <div class="col-12 col-sm-4 mb20">
+          <button type="button" class="" mat-raised-button color="" (click)="tryTwitterLogin()">{{'LoginComponent.loginTwitter' | translate}}
+          </button>
+        </div>
+      </div>
+  
+      <div class="row">
+        <!-- CREAR CUENTA BOTÓN -->
+        <div class="col-12 col-sm-4 mb20">
+          <button type="button" mat-raised-button color="" [routerLink]="['/' + environment.routesName.createAccount]">
+            <mat-icon class="icon-create" matPrefix>account_box_outline</mat-icon>{{'LoginComponent.createAccount' | translate}}
+          </button>
+        </div>
+      </div>  
+  </mat-card>
+  </div>
+
