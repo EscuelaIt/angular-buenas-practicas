@@ -6,7 +6,6 @@ import { Router } from '@angular/router';
 import { MatDialogConfig } from '@angular/material';
 
 // mis servicios
-import { AuthService } from 'src/app/services/auth/auth.service';
 import { RoutingHistoryService } from 'src/app/services/routing-history/routing-history.service';
 import { WindowSpinnerSnackbarService } from 'src/app/services/window-spinner-snackbar/window-spinner-snackbar.service';
 import { ConfigAppService } from 'src/app/services/config-app/config-app.service';
@@ -36,12 +35,10 @@ export class MvcComponent implements OnInit {
 
   constructor(
     private router: Router,
-    private authService: AuthService,
     private routingHistoryService: RoutingHistoryService,
     private windowSpinnerSnackbarService: WindowSpinnerSnackbarService,
     private configAppService: ConfigAppService,
-    // servicio propio
-    public mvcService: MvcService
+    public mvcService: MvcService // servicio propio
   ) { }
   // * ACABADA
   ngOnInit() {
@@ -142,7 +139,7 @@ export class MvcComponent implements OnInit {
   // ### LÓGICA DE APLICACIÓN ###
   /**
    * * ACABADA
-   * @description aquí realizamos el control de toda la lógica de las tres redes sociales activas para el LOGIN
+   * @description aquí realizamos el control del flujo de guardado de datos de las tres redes sociales
    * @param credential
    */
   private _tryCreateUserDataRRSS(credential: firebase.auth.UserCredential) {
@@ -193,7 +190,7 @@ export class MvcComponent implements OnInit {
   }
   /**
    * * ACABADA
-   * @description muestro ventanas modales informativas
+   * @description ventanas modales informativas
    * @param errEmailLogin
    */
   private _showErrorTryEmailLogin(errEmailLogin: ErrorLoginFirebaseInterface) {
@@ -219,7 +216,7 @@ export class MvcComponent implements OnInit {
   }
   /**
    * * ACABADA
-   * @description deslogeo al usuario y muestro mensaje modal
+   * @description deslogeo al usuario y ventanas modales informativas
    */
   private _showErrorLoginRRSSAndLogout() {
     this.mvcService.doLogOut();
@@ -236,7 +233,6 @@ export class MvcComponent implements OnInit {
    * @description dependiendo del tipo de error, realizaré una determinada acción
    * @param errorCredential
    */
-  // refactor
   private _showErrorLoginRRSS(errorCredential: ErrorCreateSocialMediaRegisterFirebaseInterface) {
     let configModal: ConfigModalInterface;
     switch (errorCredential.code) {
@@ -246,7 +242,7 @@ export class MvcComponent implements OnInit {
       case 'auth/account-exists-with-different-credential':
         const email = errorCredential.email;
         // obtener su lista de provider para enseñársela al usuario
-        this.authService.fetchProvidersForEmail(email) // LÓGICA DE APLICACIÓN
+        this.mvcService.fetchProvidersForEmail(email) // LÓGICA DE APLICACIÓN
           .subscribe(
             (providers: Array<string>) => {
               configModal = {
