@@ -21,19 +21,19 @@ import { RecoveryPasswordComponent } from 'src/app/components/recovery-password/
 import { UserProviderModel } from 'src/app/models/user-provider/user-provider.model';
 
 // mis interfaces
-import { LoginEmailDataSendIntrerface } from 'src/app/interfaces/login-email-data-send';
 import { ErrorLoginFirebaseInterface } from 'src/app/interfaces/error-login-firebase-interface';
 import { ConfigModalInterface } from 'src/app/interfaces/config-modal-interface';
 import { ErrorCreateSocialMediaRegisterFirebaseInterface } from 'src/app/interfaces/error-create-social-media-register-firebase-interface';
 
 // constantes
 import { environment } from 'src/environments/environment';
+import { LoginEmailDataSendInterface } from 'src/app/interfaces/login-email-data-send';
 
 
 @Component({
   selector: 'app-no-mvc',
   templateUrl: './no-mvc.component.html',
-  styleUrls: ['./no-mvc.component.sass']
+  styleUrls: ['./no-mvc.component.scss']
 })
 export class NoMvcComponent implements OnInit {
 
@@ -60,7 +60,7 @@ export class NoMvcComponent implements OnInit {
 
   tryEmailLogin() {
     this.windowSpinnerSnackbarService.openSpinner();
-    const values: LoginEmailDataSendIntrerface = this.formLogin.value;
+    const values: LoginEmailDataSendInterface = this.formLogin.value;
     this.authService.doLogin(values)
       .subscribe(
         (sucessEmialLogin: firebase.auth.UserCredential) => {
@@ -94,7 +94,7 @@ export class NoMvcComponent implements OnInit {
   tryGoogleLogin() {
     this.windowSpinnerSnackbarService.openSpinner();
     this.authService.googleLogin()
-      .subscribe(
+      .then(
         (credential: firebase.auth.UserCredential) => {
           this.windowSpinnerSnackbarService.closeSpiner();
           this._tryCreateUserDataRRSS(credential);

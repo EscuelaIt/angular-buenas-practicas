@@ -13,5 +13,13 @@ export const environment = {
     users: 'users',
     morInfo: 'more-info',
     provider: 'provider'
+  },
+  firebase: {
+    apiKey: '121314',
+    authDomain: '',
+    databaseURL: '',
+    projectId: '121314',
+    storageBucket: '',
+    messagingSenderId: ''
   }
 };

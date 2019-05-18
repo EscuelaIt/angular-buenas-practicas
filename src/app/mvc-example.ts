@@ -3,16 +3,13 @@ import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 
-import { LoginEmailDataSend } from 'src/app/interfaces/login-email-data-send/login-email-data-send';
-import { ErrorLoginFirebaseInterface, ErrorCreateSocialMediaRegisterFirebaseInterface } from 'src/app/interfaces/error-create-register-firebase/error-create-register-firebase';
+
 import { RoutingHistoryService } from 'src/app/services/routing-history/routing-history.service';
-import { AuthService } from 'src/app/services/firebase-login/auth.service';
 import { WindowSpinnerSnackbarService } from 'src/app/services/window-spinner-snackbar/window-spinner-snackbar.service';
 import { FirestoreToolsService } from 'src/app/services/firestore-tools/firestore-tools.service';
 import { ConfigAppService } from 'src/app/services/config-app/config-app.service';
 import { concatMap, map } from 'rxjs/operators';
 import { environment } from 'src/environments/environment';
-import { ConfigModalInterface } from 'src/app/components/modal-window/config-modal-window';
 import { FormToolsService } from 'src/app/services/form-tools/form-tools.service';
 import { MatDialogConfig } from '@angular/material';
 import { RecoveryPasswordComponent } from './components/recovery-password/recovery-password.component';
@@ -20,8 +17,12 @@ import { UserProviderModel } from 'src/app/models/user-provider/user-provider.mo
 import { of } from 'rxjs/internal/observable/of';
 import { Observable } from 'rxjs';
 import { combineLatest } from 'rxjs';
-import { LoginService } from './login.service';
 import { HttpClient } from '@angular/common/http';
+import { AuthService } from './services/auth/auth.service';
+import { LoginService } from './mvc-example-service';
+import { ErrorLoginFirebaseInterface } from './interfaces/error-login-firebase-interface';
+import { ErrorCreateSocialMediaRegisterFirebaseInterface } from './interfaces/error-create-social-media-register-firebase-interface';
+import { ConfigModalInterface } from './interfaces/config-modal-interface';
 
 @Component({
   selector: 'app-login',
@@ -176,7 +177,7 @@ export class LoginComponent implements OnInit {
       .afterClosed()
       .subscribe((email: {email: string}) => {
           // si el usuario ha cerrado la ventana no viene ningún valor
-          if (email && email.email && email.email !== environment.fakeData) {
+          if (email && email.email) {
             this._resetPAssword(email.email);
           }
         });

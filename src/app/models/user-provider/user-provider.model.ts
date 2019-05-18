@@ -4,7 +4,8 @@ export class UserProviderModel {
 
     constructor(userData: firebase.auth.UserCredential) {}
 
-    saveUserInfoUpdate(): UserProviderInterface {
+    saveUserInfoUpdate() {
         // return data to save a Firestone DDBB
+        return {};
     }
 }

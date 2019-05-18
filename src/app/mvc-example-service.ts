@@ -1,13 +1,21 @@
-// tslint:disable: max-line-length
+// Angular
 import { Injectable } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
-import { FormToolsService } from 'src/app/services/form-tools/form-tools.service';
-import { AuthService } from 'src/app/services/firebase-login/auth.service';
+
+// servicios de terceros
 import { Observable } from 'rxjs';
-import { LoginEmailDataSend } from 'src/app/interfaces/login-email-data-send/login-email-data-send';
-import { UserProviderModel } from 'src/app/models/user-provider/user-provider.model';
+
+// mis servicios
+import { FormToolsService } from 'src/app/services/form-tools/form-tools.service';
 import { FirestoreToolsService } from 'src/app/services/firestore-tools/firestore-tools.service';
+import { AuthService } from './services/auth/auth.service';
+
+// mis modelos
+import { UserProviderModel } from 'src/app/models/user-provider/user-provider.model';
+
+// constantes
 import { environment } from 'src/environments/environment';
+import { LoginEmailDataSendInterface } from './interfaces/login-email-data-send';
 
 @Injectable()
 export class LoginService {
@@ -25,7 +33,7 @@ export class LoginService {
   // lógica de negocio
 
   tryEmailLogin(): Observable<firebase.auth.UserCredential> {
-    const values: LoginEmailDataSend = this.formLogin.value;
+    const values: LoginEmailDataSendInterface = this.formLogin.value;
     return this.authService.doLogin(values);
   }
 

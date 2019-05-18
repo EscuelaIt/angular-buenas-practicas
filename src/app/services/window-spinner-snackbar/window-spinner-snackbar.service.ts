@@ -1,10 +1,16 @@
 // Angular
 import { Injectable, TemplateRef } from '@angular/core';
+import { ComponentType } from '@angular/cdk/overlay/index';
 
 // servicios de terceros
 import { MatBottomSheetConfig, MatBottomSheet, MatDialogConfig, MatDialogRef, MatDialog } from '@angular/material';
-import { ComponentType } from '@angular/cdk/overlay/index';
+
+// componentes
 import { ModalWindowComponent } from 'src/app/components/modal-window/modal-window.component';
+
+// interfaces
+import { ConfigModalInterface, ButtonModalInterface } from 'src/app/interfaces/config-modal-interface';
+import { BottomSheetDataInterface } from 'src/app/interfaces/bottom-sheet-data-interface';
 
 @Injectable({
   providedIn: 'root'

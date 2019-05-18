@@ -9,6 +9,9 @@ import * as firebase from 'firebase/app';
 // mis servicios
 import { FirestoreToolsService } from '../firestore-tools/firestore-tools.service';
 
+// mis interfaces
+import { LoginEmailDataSendInterface } from 'src/app/interfaces/login-email-data-send';
+
 @Injectable({
   providedIn: 'root'
 })
@@ -19,19 +22,18 @@ export class AuthService {
     private firestoreToolsService: FirestoreToolsService,
   ) { }
 
-  doLogin(value: LoginEmailDataSend): Observable<firebase.auth.UserCredential> {
+  doLogin(value: LoginEmailDataSendInterface): Observable<firebase.auth.UserCredential> {
     return from(this.angularFireAuth.auth
                         .signInWithEmailAndPassword(value.email, value.password));
   }
 
-  googleLogin(): Observable<firebase.auth.UserCredential> {
+  googleLogin(): Promise<firebase.auth.UserCredential> {
     // creo el proveedor y añado los SCOPES necesarios
     const provider = new firebase.auth.GoogleAuthProvider();
     provider.addScope('profile');
     provider.addScope('email');
-    const angularFireAuthProviderPromise = this.angularFireAuth.auth
+    return  this.angularFireAuth.auth
               .signInWithPopup(provider);
-    return from(angularFireAuthProviderPromise);
   }
 
   facebookLogin(): Observable<firebase.auth.UserCredential> {
@@ -65,5 +67,10 @@ export class AuthService {
     } else {
       return Promise.reject();
     }
+  }
+
+  deleteCurrentUser(): Promise<void> {
+    const user = this.angularFireAuth.auth.currentUser;
+    return user.delete();
   }
 }

@@ -1,2 +1,4 @@
-export interface LoginEmailDataSendIntrerface {
+export interface LoginEmailDataSendInterface {
+    email: string;
+    password: string;
 }
