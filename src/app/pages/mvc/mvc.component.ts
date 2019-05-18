@@ -121,7 +121,7 @@ export class MvcComponent implements OnInit {
       buttons: []
     };
     const configWindow: MatDialogConfig = {
-      disableClose: true, // Whether the user can use escape or clicking on the backdrop to close the modal
+      disableClose: false, // Whether the user can use escape or clicking on the backdrop to close the modal
       data
     };
     // abro una ventana modal para recoger el email del usuario
