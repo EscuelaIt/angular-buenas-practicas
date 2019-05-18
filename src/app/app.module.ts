@@ -3,10 +3,14 @@ import { NgModule } from '@angular/core';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
+import { RecoveryPasswordComponent } from './components/recovery-password/recovery-password/recovery-password.component';
+import { ModalWindowComponent } from './components/modal-window/modal-window.component';
 
 @NgModule({
   declarations: [
-    AppComponent
+    AppComponent,
+    RecoveryPasswordComponent,
+    ModalWindowComponent
   ],
   imports: [
     BrowserModule,
