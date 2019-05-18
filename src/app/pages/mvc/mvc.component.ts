@@ -65,101 +65,70 @@ export class MvcComponent implements OnInit {
   }
   // * ACABADA
   onTryGoogleLogin() {
-    let googleCredential: firebase.auth.UserCredential;
     this.windowSpinnerSnackbarService.openSpinner(); // LÓGICA DE APLICACIÓN
-    const googleLoginPromise = this.mvcService.tryGoogleLogin() // LÓGICA DE NEGOCIO
+    this.mvcService.onTryGoogleLogin() // LÓGICA DE NEGOCIO
       .then(
         (credential: firebase.auth.UserCredential) => {
-          googleCredential = credential;
-          if (googleCredential.additionalUserInfo.isNewUser) {
-            return this.mvcService.createUserDataFromCredential(credential); // LÓGICA DE NEGOCIO
-          } else {
-            return Promise.resolve(false);
-          }
+          this.windowSpinnerSnackbarService.closeSpiner();
+          this._tryCreateUserDataRRSS(credential); // LÓGICA DE NEGOCIO
         },
         (errorCredential: ErrorCreateSocialMediaRegisterFirebaseInterface) => {
           this.windowSpinnerSnackbarService.closeSpiner(true); // LÓGICA DE APLICACIÓN
           this._showErrorLoginRRSS(errorCredential); // LÓGICA DE APLICACIÓN
-          return googleLoginPromise.finally();
-        })
-      .then(
-        (dataCreate) => {
-          return this.mvcService.updateUserProviderDataRRSS(googleCredential); // LÓGICA DE NEGOCIO
-        },
-        errorDataCreate => {
-          this.windowSpinnerSnackbarService.closeSpiner(true); // LÓGICA DE APLICACIÓN
-          this._showErrorLoginRRSSAndLogout(); // LÓGICA DE APLICACIÓN
-          this.mvcService.deleteCurrentUser(); // LÓGICA DE NEGOCIO
-          return googleLoginPromise.finally();
-        }
-      )
-      .then(
-        (dataUpdate) => {
-          this.windowSpinnerSnackbarService.closeSpiner(); // LÓGICA DE APLICACIÓN
-          this._navigateHomeOrBackUrl(); // LÓGICA DE APLICACIÓN
-        },
-        errorDataUpdate => {
-          this.windowSpinnerSnackbarService.closeSpiner(true); // LÓGICA DE APLICACIÓN
-          this._showErrorLoginRRSSAndLogout(); // LÓGICA DE APLICACIÓN
         });
   }
-
-  tryFacebookLogin() {
-    // levanto SPINNER
-    this.windowSpinnerSnackbarService.openSpinner();
-    // llamo al servicio de AUTH de GOOGLE
-    this.authService.facebookLogin()
-      .subscribe(
+  // * ACABADA
+  onTryFacebookLogin() {
+    this.windowSpinnerSnackbarService.openSpinner(); // LÓGICA DE APLICACIÓN
+    this.mvcService.onTryFacebookLogin() // LÓGICA DE NEGOCIO
+      .then(
         (credential: firebase.auth.UserCredential) => {
           this.windowSpinnerSnackbarService.closeSpiner();
-          // this._tryCreateUserDataRRSS(credential);
+          this._tryCreateUserDataRRSS(credential); // LÓGICA DE NEGOCIO
         },
-        ((errorCredential: ErrorCreateSocialMediaRegisterFirebaseInterface) => {
-          console.log('tryFacebookLogin() errorCredential: ', errorCredential);
-          this.windowSpinnerSnackbarService.closeSpiner(true);
-          this._showErrorLoginRRSS(errorCredential);
-        })
-      );
+        (errorCredential: ErrorCreateSocialMediaRegisterFirebaseInterface) => {
+          this.windowSpinnerSnackbarService.closeSpiner(true); // LÓGICA DE APLICACIÓN
+          this._showErrorLoginRRSS(errorCredential); // LÓGICA DE APLICACIÓN
+        });
   }
-
-  tryTwitterLogin() {
-    // levanto SPINNER
-    this.windowSpinnerSnackbarService.openSpinner();
-    this.authService.twitterLogin()
-    .subscribe(
-      (credential: firebase.auth.UserCredential) => {
-        this.windowSpinnerSnackbarService.closeSpiner();
-        // this._tryCreateUserDataRRSS(credential);
-      },
-      ((errorCredential: ErrorCreateSocialMediaRegisterFirebaseInterface) => {
-        console.log('tryTwitterLogin() errorCredential: ', errorCredential);
-        this.windowSpinnerSnackbarService.closeSpiner(true);
-        this._showErrorLoginRRSS(errorCredential);
-      })
-    );
+  // * ACABADA
+  onTryTwitterLogin() {
+    this.windowSpinnerSnackbarService.openSpinner(); // LÓGICA DE APLICACIÓN
+    this.mvcService.onTryTwitterLogin() // LÓGICA DE NEGOCIO
+      .then(
+        (credential: firebase.auth.UserCredential) => {
+          this.windowSpinnerSnackbarService.closeSpiner();
+          this._tryCreateUserDataRRSS(credential); // LÓGICA DE NEGOCIO
+        },
+        (errorCredential: ErrorCreateSocialMediaRegisterFirebaseInterface) => {
+          this.windowSpinnerSnackbarService.closeSpiner(true); // LÓGICA DE APLICACIÓN
+          this._showErrorLoginRRSS(errorCredential); // LÓGICA DE APLICACIÓN
+        });
   }
-  /**
-   * * ACABADA
-   */
+  // * ACABADA
   onClickIconEmail() {
+     // LÓGICA DE APLICACIÓN
     this.windowSpinnerSnackbarService.openBottomSheet(this.configAppService.CONFIG_APP.bottomSheetData.email);
   }
-
+  // * ACABADA
   onClickIconPassword() {
+     // LÓGICA DE APLICACIÓN
     this.windowSpinnerSnackbarService.openBottomSheet(this.configAppService.CONFIG_APP.bottomSheetData.password);
   }
-
+  // * ACABADA
   onClickRecoverPassword() {
+     // LÓGICA DE APLICACIÓN
     const data: ConfigModalInterface = {
       tittle: 'LoginComponent.recover',
       messages: ['LoginComponent.recoverPasswordInfo'],
-      buttons: [] // no lo voy a usar
+      buttons: []
     };
     const configWindow: MatDialogConfig = {
       disableClose: true, // Whether the user can use escape or clicking on the backdrop to close the modal
       data
     };
-// tslint:disable-next-line: max-line-length
+    // abro una ventana modal para recoger el email del usuario
+    // LÓGICA DE APLICACIÓN
     this.windowSpinnerSnackbarService.showCustomDialogWindowReturnReference( RecoveryPasswordComponent, configWindow)
       .afterClosed()
       .subscribe((email: {email: string}) => {
@@ -171,8 +140,46 @@ export class MvcComponent implements OnInit {
   }
 
   // ### LÓGICA DE APLICACIÓN ###
-
-  // navegación de la aplicación
+  /**
+   * * ACABADA
+   * @description aquí realizamos el control de toda la lógica de las tres redes sociales activas para el LOGIN
+   * @param credential
+   */
+  private _tryCreateUserDataRRSS(credential: firebase.auth.UserCredential) {
+    this.windowSpinnerSnackbarService.openSpinner(); // LÓGICA DE APLICACIÓN
+    // compruebo si el usuario es nuevo o no
+    let saveDataUserPromise;
+    if (credential.additionalUserInfo.isNewUser) { // LÓGICA DE NEGOCIO
+      saveDataUserPromise = this.mvcService.createUserDataFromCredential(credential);
+    } else {
+      saveDataUserPromise = Promise.resolve(false);
+    }
+    saveDataUserPromise // LÓGICA DE NEGOCIO
+        .then(
+          (dataCreate) => {
+            return this.mvcService.updateUserProviderDataRRSS(credential); // LÓGICA DE NEGOCIO
+          },
+          errorDataCreate => {
+            this.windowSpinnerSnackbarService.closeSpiner(true); // LÓGICA DE APLICACIÓN
+            this._showErrorLoginRRSSAndLogout(); // LÓGICA DE APLICACIÓN
+            this.mvcService.deleteCurrentUser(); // LÓGICA DE NEGOCIO
+            return saveDataUserPromise.finally();
+          }
+        )
+        .then(
+          (dataUpdate) => {
+            this.windowSpinnerSnackbarService.closeSpiner(); // LÓGICA DE APLICACIÓN
+            this._navigateHomeOrBackUrl(); // LÓGICA DE APLICACIÓN
+          },
+          errorDataUpdate => {
+            this.windowSpinnerSnackbarService.closeSpiner(true); // LÓGICA DE APLICACIÓN
+            this._showErrorLoginRRSSAndLogout(); // LÓGICA DE APLICACIÓN
+          });
+  }
+  /**
+   * * ACABADA
+   * @description navegación de la aplicación
+   */
   private _navigateHomeOrBackUrl() {
     const lastNavigation = this.routingHistoryService.getPreviousUrl();
     // si no es LOGIN o no es CREATE-ACCOUNT, puedes volverte a donde ibas
@@ -184,8 +191,11 @@ export class MvcComponent implements OnInit {
       this.router.navigate(['/' + environment.routesName.myAccount]);
     }
   }
-
-  // muestro ventanas modales informativas
+  /**
+   * * ACABADA
+   * @description muestro ventanas modales informativas
+   * @param errEmailLogin
+   */
   private _showErrorTryEmailLogin(errEmailLogin: ErrorLoginFirebaseInterface) {
     const configModal: ConfigModalInterface = {
       class: 'error',
@@ -207,9 +217,12 @@ export class MvcComponent implements OnInit {
     }
     this.windowSpinnerSnackbarService.showDialogWindowWithoutReference(configModal);
   }
-
+  /**
+   * * ACABADA
+   * @description deslogeo al usuario y muestro mensaje modal
+   */
   private _showErrorLoginRRSSAndLogout() {
-    this.authService.doLogout();
+    this.mvcService.doLogOut();
     const configModal: ConfigModalInterface = {
       class: 'error',
       tittle: 'Errors.unexpectedError',
@@ -218,20 +231,22 @@ export class MvcComponent implements OnInit {
     };
     this.windowSpinnerSnackbarService.showDialogWindowWithoutReference(configModal);
   }
-
-
-
-
+  /**
+   * * ACABADA
+   * @description dependiendo del tipo de error, realizaré una determinada acción
+   * @param errorCredential
+   */
   // refactor
   private _showErrorLoginRRSS(errorCredential: ErrorCreateSocialMediaRegisterFirebaseInterface) {
     let configModal: ConfigModalInterface;
     switch (errorCredential.code) {
       case 'auth/popup-closed-by-user':
         // no hago nada, porque el usuario a cancelado o cerrado el popup de LOGIN del Provider
-        break;
+        break;  // LÓGICA DE APLICACIÓN
       case 'auth/account-exists-with-different-credential':
         const email = errorCredential.email;
-        this.authService.fetchProvidersForEmail(email)
+        // obtener su lista de provider para enseñársela al usuario
+        this.authService.fetchProvidersForEmail(email) // LÓGICA DE APLICACIÓN
           .subscribe(
             (providers: Array<string>) => {
               configModal = {
@@ -240,7 +255,7 @@ export class MvcComponent implements OnInit {
                 messages: ['Errors.retryLoginAnotherProvider', '"' + providers[0] + '"'],
                 buttons: [{label: 'accept'}]
               };
-              this.windowSpinnerSnackbarService.showDialogWindowWithoutReference(configModal);
+              this.windowSpinnerSnackbarService.showDialogWindowWithoutReference(configModal);  // LÓGICA DE APLICACIÓN
             },
             errorFetchProvidersForEmail => {
               console.log('showErrorLoginRRSS() errorFetchProvidersForEmail: ', errorFetchProvidersForEmail);
@@ -250,7 +265,7 @@ export class MvcComponent implements OnInit {
                 messages: ['Errors.errorTryLogin', 'Errors.retry'],
                 buttons: [{label: 'accept'}]
               };
-              this.windowSpinnerSnackbarService.showDialogWindowWithoutReference(configModal);
+              this.windowSpinnerSnackbarService.showDialogWindowWithoutReference(configModal); // LÓGICA DE APLICACIÓN
             });
         break;
       case 'auth/invalid-credential': // message: "Malformed response cannot be parsed from twitter.com for VERIFY_CREDENTIAL"
@@ -261,15 +276,18 @@ export class MvcComponent implements OnInit {
           messages: ['Errors.errorTryLogin', 'Errors.retry'],
           buttons: [{label: 'accept'}]
         };
-        this.windowSpinnerSnackbarService.showDialogWindowWithoutReference(configModal);
+        this.windowSpinnerSnackbarService.showDialogWindowWithoutReference(configModal); // LÓGICA DE APLICACIÓN
         break;
     }
   }
-  
-  
+  /**
+   * * ACABADA
+   * @description cuando he recogido el email del usuario, llamo al servicio de Auth para que envíe un email con las intrucciones
+   * @param email 
+   */
   private _resetPAssword(email: string) {
-    this.windowSpinnerSnackbarService.openSpinner();
-    this.authService.resetPassword(email)
+    this.windowSpinnerSnackbarService.openSpinner(); // LÓGICA APLICACIÓN
+    this.mvcService.resetPassword(email) // LÓGICA DE NEGOCIO
     .subscribe(
       (sendEmailSuccess) => {
         this.windowSpinnerSnackbarService.closeSpiner();
@@ -278,10 +296,9 @@ export class MvcComponent implements OnInit {
           messages: ['Success.openEmail'],
           buttons: [{label: 'accept'}]
         };
-        this.windowSpinnerSnackbarService.showDialogWindowWithoutReference(configModal);
+        this.windowSpinnerSnackbarService.showDialogWindowWithoutReference(configModal); // LÓGICA APLICACIÓN
       },
       sendEmailError => {
-        console.log('onClickRecoverPassword() sendEmailError: ', sendEmailError);
         this.windowSpinnerSnackbarService.closeSpiner(true);
         const configModal: ConfigModalInterface = {
           class: 'error',
@@ -306,7 +323,7 @@ export class MvcComponent implements OnInit {
             configModal.messages.push('Errors.retryLater');
             break;
         }
-        this.windowSpinnerSnackbarService.showDialogWindowWithoutReference(configModal);
+        this.windowSpinnerSnackbarService.showDialogWindowWithoutReference(configModal); // LÓGICA APLICACIÓN
       });
   }
 

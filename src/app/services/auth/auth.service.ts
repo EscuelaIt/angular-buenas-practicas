@@ -36,19 +36,19 @@ export class AuthService {
               .signInWithPopup(provider);
   }
 
-  facebookLogin(): Observable<firebase.auth.UserCredential> {
+  facebookLogin(): Promise<firebase.auth.UserCredential> {
     // creo el proveedor y añado los SCOPES necesarios
     const provider = new firebase.auth.FacebookAuthProvider();
     provider.addScope('user_birthday');
-    return from(this.angularFireAuth.auth
-                .signInWithPopup(provider));
+    return this.angularFireAuth.auth
+                .signInWithPopup(provider);
   }
 
-  twitterLogin(): Observable<firebase.auth.UserCredential> {
+  twitterLogin(): Promise<firebase.auth.UserCredential> {
     // creo el proveedor y añado los SCOPES necesarios
     const provider = new firebase.auth.TwitterAuthProvider();
-    return from(this.angularFireAuth.auth
-                .signInWithPopup(provider));
+    return this.angularFireAuth.auth
+                .signInWithPopup(provider);
   }
 
   resetPassword(email: string): Observable<void> {

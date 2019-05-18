@@ -109,7 +109,7 @@ export class NoMvcComponent implements OnInit {
   tryFacebookLogin() {
     this.windowSpinnerSnackbarService.openSpinner();
     this.authService.facebookLogin()
-      .subscribe(
+      .then(
         (credential: firebase.auth.UserCredential) => {
           this.windowSpinnerSnackbarService.closeSpiner();
           this._tryCreateUserDataRRSS(credential);
@@ -124,7 +124,7 @@ export class NoMvcComponent implements OnInit {
   tryTwitterLogin() {
     this.windowSpinnerSnackbarService.openSpinner();
     this.authService.twitterLogin()
-    .subscribe(
+    .then(
       (credential: firebase.auth.UserCredential) => {
         this.windowSpinnerSnackbarService.closeSpiner();
         this._tryCreateUserDataRRSS(credential);

@@ -32,16 +32,25 @@ export class MvcService {
 
   // ### LÓGICA DE NEGOCIO ###
 
-  // llamadas AJAX a servicios externos
+  // llamadas AJAX a servicios externos de autenticación
   onTryEmailLogin(): Observable<firebase.auth.UserCredential> {
     const values: LoginEmailDataSendInterface = this.formLogin.value;
     return this.authService.doLogin(values);
   }
 
-  tryGoogleLogin(): Promise<firebase.auth.UserCredential> {
+  onTryGoogleLogin(): Promise<firebase.auth.UserCredential> {
     return this.authService.googleLogin();
   }
 
+  onTryFacebookLogin(): Promise<firebase.auth.UserCredential> {
+    return this.authService.facebookLogin();
+  }
+
+  onTryTwitterLogin(): Promise<firebase.auth.UserCredential> {
+    return this.authService.twitterLogin();
+  }
+
+  // MODELOS DE DATOS A GUARDAR EN LA DDBB
   createUserDataFromCredential(credential: firebase.auth.UserCredential): Promise<any> {
     const userLogin = new UserProviderModel(credential);
     return this.firestoreToolsService.updateFirestoneItemById (
@@ -53,6 +62,7 @@ export class MvcService {
 
   updateUserProviderDataRRSS(credential: firebase.auth.UserCredential): Promise<any> {
     const uid = credential.user.uid;
+    // tslint:disable-next-line: max-line-length
     const url = environment.firestoneCollectionNames.users + '/' + uid + '/' + environment.firestoneCollectionNames.morInfo + '/' + environment.firestoneCollectionNames.provider;
     return this.firestoreToolsService.updateFirestoneItem (
       url,
@@ -60,8 +70,20 @@ export class MvcService {
     );
   }
 
+  doLogOut() {
+    this.authService.doLogout();
+  }
+
   deleteCurrentUser() {
     this.authService.deleteCurrentUser();
+  }
+
+  fetchProvidersForEmail(email: string) {
+    return this.authService.fetchProvidersForEmail(email);
+  }
+
+  resetPassword(email: string) {
+    return this.authService.resetPassword(email);
   }
 
   // creación de modelos de datos
